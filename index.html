@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Fishing Game</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Fishing Game</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -36,6 +36,56 @@
   <div id="shopContent">
     <h2>Rod Shop</h2>
     <div id="rodList"></div>
+  </div>
+</div>
+
+<!-- Settings Button -->
+<button id="settingsBtn">⚙</button>
+
+<!-- Settings Modal -->
+<div id="settingsModal">
+  <div id="settingsContent">
+    <h2>Settings</h2>
+    <div class="setting">
+      <label>Background Music:</label>
+      <select id="musicSelect">
+        <option value="0">Song 1</option>
+        <option value="1">Song 2</option>
+      </select>
+    </div>
+    <div class="setting">
+      <label>Mute Sound:</label>
+      <input type="checkbox" id="muteCheckbox">
+    </div>
+    <div class="setting">
+      <button id="aboutAuthorsBtn">About Authors</button>
+    </div>
+    <button id="closeSettingsBtn">Close</button>
+  </div>
+</div>
+
+<!-- About Authors Modal -->
+<div id="aboutModal">
+  <div id="aboutContent">
+    <h2>About the Authors</h2>
+    <div class="author">
+      <img src="https://i.pinimg.com/736x/23/4e/f5/234ef589d06b5484747821fc608a6ae5.jpg" alt="Author 1">
+      <h3>Eironn M. Bernal</h3>
+      <p>Lead programmer and game designer. Created some fish sprites and both songs.</p>
+    </div>
+    <div class="author">
+      <img src="https://i.pinimg.com/736x/07/b5/92/07b592b010365a04d17b5ae3d4588edb.jpg" alt="Author 2">
+      <h3>Rey William R. Arquiza</h3>
+      <p>Graphic artist and sprite creator. Designed the fish and rod sprites. Helped coding and debugging.</p>
+    </div>
+    <div class="author">
+      <img src="https://i.pinimg.com/736x/bb/31/2a/bb312a655c6e7d58abb93516701ea8e2.jpg" alt="Author 3">
+      <h3>Meirelle Jillian I. Tambongco</h3>
+      <p>Graphic artist and sprite creator. Designed the fish and rod sprites. Helped making the music and picking of sound effects</p>
+    </div>
+      <p>Want any score? you can use a SHORTCUT and PRINT it out but have to SHIFT it a little.</p>
+    </div>
+    <button id="closeAboutBtn">Close</button>
   </div>
 </div>
 
