@@ -55,8 +55,8 @@ const baseFish = [
   { name:"Catfish", rarity:"Uncommon", sprite:"sprites/catfish.png", speed:2.4, points:25, weight:25 },
   { name:"Perch", rarity:"Uncommon", sprite:"sprites/catfish.png", speed:2.6, points:25, weight:25 },
 
-  { name:"Sturgeon", rarity:"Rare", sprite:"sprites/sturgeon.png", speed:3.4, points:50, weight:15 },
-  { name:"Marlin", rarity:"Rare", sprite:"sprites/sturgeon.png", speed:3.6, points:55, weight:15 },
+  { name:"Swordfish", rarity:"Rare", sprite:"sprites/swordfish.png", speed:3.4, points:50, weight:15 },
+  { name:"Marlin", rarity:"Rare", sprite:"sprites/swordfish.png", speed:3.6, points:55, weight:15 },
 
   { name:"Crimson Leviathan", rarity:"Legendary", sprite:"sprites/leviathan.png", speed:4.8, points:150, weight:5, jitter:true }
 ]
@@ -238,3 +238,4 @@ function loop(){
   }
 }
 loop()
+
