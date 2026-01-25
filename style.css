@@ -6,6 +6,7 @@ body {
   height: 100vh;
   font-family: Arial, sans-serif;
   color: white;
+  overflow-x: hidden;
 }
 
 #container {
@@ -31,9 +32,7 @@ body {
   100% { transform: translate(0); }
 }
 
-.shake {
-  animation: shake 0.15s infinite;
-}
+.shake { animation: shake 0.15s infinite; }
 
 #fish {
   position: absolute;
@@ -45,9 +44,7 @@ body {
   image-rendering: pixelated;
 }
 
-.legendary {
-  filter: drop-shadow(0 0 6px #a855f7);
-}
+.legendary { filter: drop-shadow(0 0 6px #a855f7); }
 
 #bar {
   position: absolute;
@@ -76,23 +73,20 @@ body {
   border-radius: 5px;
 }
 
-#ui {
-  min-width: 220px;
-}
+#ui { min-width: 220px; }
 
 button {
   margin-top: 10px;
-  padding: 6px 10px;
+  padding: 12px 16px;
   background: #444;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
 }
 
-button:hover {
-  background: #666;
-}
+button:hover { background: #666; }
 
 #winScreen {
   position: absolute;
@@ -105,10 +99,7 @@ button:hover {
   z-index: 10;
 }
 
-#winScreen h1 {
-  color: gold;
-  font-size: 32px;
-}
+#winScreen h1 { color: gold; font-size: 32px; }
 
 /* ------------------ SHOP ------------------ */
 #shop {
@@ -135,21 +126,17 @@ button:hover {
   top: 50%;
   transform: translateY(-50%);
   background: #ffaa00;
-  width: 30px;
-  height: 50px;
+  width: 40px;
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   border-radius: 0 5px 5px 0;
-  font-size: 20px;
+  font-size: 24px;
 }
 
-#shopContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+#shopContent { flex: 1; display: flex; flex-direction: column; }
 
 #rodList {
   margin-top: 20px;
@@ -170,11 +157,7 @@ button:hover {
   border-radius: 5px;
 }
 
-.rodItem img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-}
+.rodItem img { width: 50px; height: 50px; object-fit: contain; }
 
 .rodItem.disabled {
   background: #555;
@@ -198,19 +181,15 @@ button:hover {
   background: #333;
   padding: 20px;
   border-radius: 10px;
-  width: 400px;
+  width: 90%;
+  max-width: 400px;
   max-height: 80%;
   overflow-y: auto;
   text-align: center;
 }
 
-.setting {
-  margin: 15px 0;
-}
-
-.setting label {
-  margin-right: 10px;
-}
+.setting { margin: 15px 0; }
+.setting label { margin-right: 10px; }
 
 #aboutContent .author {
   background: #444;
@@ -234,9 +213,9 @@ button:hover {
   color: white;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -244,6 +223,18 @@ button:hover {
   transition: background 0.2s;
 }
 
-#settingsBtn:hover {
-  background: #666;
+#settingsBtn:hover { background: #666; }
+
+/* ------------------ MOBILE ------------------ */
+@media (max-width: 500px) {
+  #container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  #game { width: 100px; height: 300px; }
+  #bar { height: 60px; }
+  #fish { height: 30px; }
+  #ui { min-width: auto; font-size: 14px; }
 }
