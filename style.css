@@ -110,7 +110,7 @@ button:hover {
   font-size: 32px;
 }
 
-/* ------------------ SHOP SIDEBAR ------------------ */
+/* ------------------ SHOP ------------------ */
 #shop {
   position: fixed;
   left: 0;
@@ -180,4 +180,70 @@ button:hover {
   background: #555;
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+/* SETTINGS & ABOUT MODAL */
+#settingsModal, #aboutModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  color: white;
+}
+
+#settingsContent, #aboutContent {
+  background: #333;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-height: 80%;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.setting {
+  margin: 15px 0;
+}
+
+.setting label {
+  margin-right: 10px;
+}
+
+#aboutContent .author {
+  background: #444;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+#aboutContent .author img {
+  width: 80px;
+  border-radius: 5px;
+}
+
+/* SETTINGS BUTTON (GEAR ICON) */
+#settingsBtn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 200;
+  background: #444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#settingsBtn:hover {
+  background: #666;
 }
