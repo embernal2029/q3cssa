@@ -67,4 +67,15 @@ skipBtn.addEventListener("click",()=>{progress=0;spawnFish()})
 // SETTINGS MODAL
 settingsBtn.addEventListener("click",()=>settingsModal.style.display="flex")
 closeSettingsBtn.addEventListener("click",()=>settingsModal.style.display="none")
-musicSelect.addEventListener("change",()=>{selectedBgm.pause();selectedBgm.currentTime
+musicSelect.addEventListener("change",()=>{selectedBgm.pause();selectedBgm.currentTime=0;selectedBgm=bgmTracks[musicSelect.value];if(!muteCheckbox.checked)selectedBgm.play()})
+muteCheckbox.addEventListener("change",()=>{if(muteCheckbox.checked)selectedBgm.pause();else selectedBgm.play()})
+
+// ABOUT AUTHORS
+aboutAuthorsBtn.addEventListener("click",()=>aboutModal.style.display="flex")
+closeAboutBtn.addEventListener("click",()=>aboutModal.style.display="none")
+
+// START GAME
+spawnFish()
+renderShop()
+function gameLoop(){if(!gameWon){updateFish();updateBar();checkOverlap();requestAnimationFrame(gameLoop)}}
+gameLoop()
