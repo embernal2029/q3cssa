@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fishing Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="container">
+  <div id="game">
+    <div id="fish"></div>
+    <div id="bar"></div>
+    <div id="meter"><div id="fill"></div></div>
+  </div>
+
+  <div id="ui">
+    <h3 id="fishName">Fish:</h3>
+    <h3 id="rarity">Rarity:</h3>
+    <h3 id="score">Score: 0 / 1000</h3>
+    <button id="skipBtn">Skip Fish (S)</button>
+    <p>Hold mouse or Space</p>
+  </div>
+
+  <div id="winScreen">
+    <div>
+      <h1>🎉 You Win! 🎣</h1>
+      <p>You reached 1,000 points!</p>
+    </div>
+  </div>
+</div>
+
+<!-- Shop Sidebar -->
+<div id="shop">
+  <div id="shopArrow">➡</div>
+  <div id="shopContent">
+    <h2>Rod Shop</h2>
+    <div id="rodList"></div>
+  </div>
+</div>
+
+<!-- Background music -->
+<audio id="bgm1" src="audio/song1.mp3" loop></audio>
+<audio id="bgm2" src="audio/song2.mp3" loop></audio>
+
+<script src="script.js"></script>
+</body>
+</html>
