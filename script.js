@@ -1,28 +1,47 @@
+// Variables 
+// Main mechanics
 const game = document.getElementById("game")
 const container = document.getElementById("container")
 const fish = document.getElementById("fish")
 const bar = document.getElementById("bar")
 const fill = document.getElementById("fill")
-
+// UI
 const fishNameText = document.getElementById("fishName")
 const rarityText = document.getElementById("rarity")
 const scoreText = document.getElementById("score")
 const skipBtn = document.getElementById("skipBtn")
 const winScreen = document.getElementById("winScreen")
-
+// Shop
 const shop = document.getElementById("shop")
 const shopArrow = document.getElementById("shopArrow")
 const rodList = document.getElementById("rodList")
-
+// Settings
 const settingsBtn = document.getElementById("settingsBtn")
 const settingsModal = document.getElementById("settingsModal")
 const closeSettingsBtn = document.getElementById("closeSettingsBtn")
-const musicSelect = document.getElementById("musicSelect")
-const muteCheckbox = document.getElementById("muteCheckbox")
+const prevBtn = document.getElementById("prevBtn")
+const nextBtn = document.getElementById("nextBtn")
+const muteToggleBtn = document.getElementById("muteToggleBtn")
+const muteImg = document.getElementById("muteImg")
 
+let isMuted = false
+let sfxMuted = false
+// About Authors
 const aboutAuthorsBtn = document.getElementById("aboutAuthorsBtn")
 const aboutModal = document.getElementById("aboutModal")
 const closeAboutBtn = document.getElementById("closeAboutBtn")
+// SFX and BGM
+const catchsfx = [
+  document.getElementById("catchsfx0"),
+  document.getElementById("catchsfx1"),
+  document.getElementById("catchsfx2"),
+  document.getElementById("catchsfx3")
+]
+const skipsfx = document.getElementById("skipsfx")
+const buysfx = document.getElementById("buysfx")
+const sfxMuteToggleBtn = document.getElementById("sfxMuteToggleBtn")
+const sfxMuteImg = document.getElementById("sfxMuteImg")
+const legspawn = document.getElementById("legspawn")
 
 const bgmTracks = [
   document.getElementById("bgm1"),
@@ -30,6 +49,7 @@ const bgmTracks = [
 ]
 
 let selectedBgm = bgmTracks[0]
+let musicStarted = false
 selectedBgm.volume = 0.35
 
 const WIN_SCORE = 1000
@@ -46,24 +66,21 @@ let gameWon = false
 
 let ownedRods = []
 let activeRod = null
-
+// Fish data
 const baseFish = [
   { name:"Sunfish", rarity:"Common", sprite:"sprites/sunfish.png", speed:1.6, points:10, weight:40 },
-  { name:"Minnow", rarity:"Common", sprite:"sprites/sunfish.png", speed:1.4, points:8, weight:40 },
-  { name:"Bluegill", rarity:"Common", sprite:"sprites/sunfish.png", speed:1.5, points:10, weight:40 },
+  { name:"Flounder", rarity:"Common", sprite:"sprites/flounder.png", speed:1.4, points:8, weight:40 },
+  { name:"Tuna", rarity:"Common", sprite:"sprites/tuna.png", speed:1.5, points:10, weight:40 },
 
   { name:"Catfish", rarity:"Uncommon", sprite:"sprites/catfish.png", speed:2.4, points:25, weight:25 },
-  { name:"Perch", rarity:"Uncommon", sprite:"sprites/catfish.png", speed:2.6, points:25, weight:25 },
+  { name:"Perch", rarity:"Uncommon", sprite:"sprites/perch.png", speed:2.6, points:25, weight:25 },
 
   { name:"Swordfish", rarity:"Rare", sprite:"sprites/swordfish.png", speed:3.4, points:50, weight:15 },
-  { name:"Marlin", rarity:"Rare", sprite:"sprites/swordfish.png", speed:3.6, points:55, weight:15 },
+  { name:"Herring", rarity:"Rare", sprite:"sprites/herring.png", speed:3.6, points:55, weight:15 },
 
   { name:"Crimson Leviathan", rarity:"Legendary", sprite:"sprites/leviathan.png", speed:4.8, points:150, weight:5, jitter:true }
 ]
-
-let fishPool = [...baseFish]
-let currentFish = null
-
+// Rod data
 const rods = [
   {
     name:"Basic Rod",
@@ -84,15 +101,16 @@ const rods = [
     sprite:"sprites/rod3.png"
   }
 ]
+//fish spawning
+let fishPool = []
+let currentFish = null
 
 function rebuildFishPool() {
   fishPool = []
-  const weights = activeRod ? activeRod.weights : null
-
   baseFish.forEach(f => {
     let w = f.weight
-    if (weights && weights[f.rarity] !== undefined) {
-      w = weights[f.rarity]
+    if (activeRod && activeRod.weights[f.rarity] !== undefined) {
+      w = activeRod.weights[f.rarity]
     }
     fishPool.push({ ...f, weight:w })
   })
@@ -102,8 +120,7 @@ function getRandomFish() {
   const total = fishPool.reduce((s,f)=>s+f.weight,0)
   let r = Math.random() * total
   for (const f of fishPool) {
-    if (r < f.weight) return f
-    r -= f.weight
+    if ((r -= f.weight) <= 0) return f
   }
   return fishPool[0]
 }
@@ -123,48 +140,19 @@ function spawnFish() {
   fishSpeed = currentFish.speed * (Math.random() > 0.5 ? 1 : -1)
 
   container.classList.toggle("shake", currentFish.rarity === "Legendary")
-}
-
-function renderShop() {
-  rodList.innerHTML = ""
-  rods.forEach((rod, i) => {
-    const d = document.createElement("div")
-    d.className = "rodItem"
-
-    const prevOwned = i === 0 || ownedRods.includes(i-1)
-    if (score < rod.cost || !prevOwned || ownedRods.includes(i)) {
-      d.classList.add("disabled")
-    }
-
-    d.innerHTML = `<img src="${rod.sprite}"><div>${rod.name} (${rod.cost})</div>`
-    if (!d.classList.contains("disabled")) {
-      d.onclick = () => buyRod(i)
-    }
-    rodList.appendChild(d)
-  })
-}
-
-function buyRod(i) {
-  const rod = rods[i]
-  if (score < rod.cost) return
-  score -= rod.cost
-  ownedRods.push(i)
-  activeRod = rod
-  rebuildFishPool()
-  scoreText.textContent = `Score: ${score} / ${WIN_SCORE}`
-  renderShop()
+  if (currentFish.rarity === "Legendary" && !sfxMuted) {
+    legspawn.currentTime = 0
+    legspawn.play().catch(()=>{})
+  }
 }
 
 function updateFish() {
   fishY += fishSpeed
   if (currentFish.jitter) fishY += (Math.random()-0.5)*4
-
-  if (fishY <= 0 || fishY >= game.clientHeight - fish.clientHeight) {
-    fishSpeed *= -1
-  }
+  if (fishY <= 0 || fishY >= game.clientHeight - fish.clientHeight) fishSpeed *= -1
   fish.style.top = fishY + "px"
 }
-
+// Bar mechanics
 function updateBar() {
   barVelocity += holding ? -0.6 : 0.5
   barVelocity = Math.max(-MAX_BAR_SPEED, Math.min(MAX_BAR_SPEED, barVelocity))
@@ -181,6 +169,13 @@ function checkOverlap() {
   fill.style.height = progress + "%"
 
   if (progress >= 100) {
+    skipsfx.pause()
+    catchsfx.forEach(sfx => sfx.pause())
+    const rodIndex = activeRod ? rods.indexOf(activeRod) : 0
+    if (!sfxMuted) {
+      catchsfx[rodIndex].currentTime = 0
+      catchsfx[rodIndex].play().catch(()=>{})
+    }
     score += currentFish.points
     scoreText.textContent = `Score: ${score} / ${WIN_SCORE}`
     container.classList.remove("shake")
@@ -189,42 +184,113 @@ function checkOverlap() {
     renderShop()
   }
 }
+// Shop mechanics
+function renderShop() {
+  rodList.innerHTML = ""
+  rods.forEach((rod, i) => {
+    const d = document.createElement("div")
+    d.className = "rodItem"
+
+    const canBuy = score >= rod.cost && (i === 0 || ownedRods.includes(i-1)) && !ownedRods.includes(i)
+    if (!canBuy) d.classList.add("disabled")
+
+    d.innerHTML = `<img src="${rod.sprite}"><div>${rod.name} (${rod.cost})</div>`
+    if (canBuy) d.onclick = () => buyRod(i)
+    rodList.appendChild(d)
+  })
+}
+
+function buyRod(i) {
+  if (!sfxMuted) {
+    buysfx.currentTime = 0
+    buysfx.play().catch(()=>{})
+  }
+  score -= rods[i].cost
+  ownedRods.push(i)
+  activeRod = rods[i]
+  rebuildFishPool()
+  scoreText.textContent = `Score: ${score} / ${WIN_SCORE}`
+  renderShop()
+}
+// Audio mechanics
+function startMusic() {
+  if (!musicStarted && !isMuted) {
+    selectedBgm.play().catch(()=>{})
+    musicStarted = true
+  }
+}
+
+function updateMuteImage() {
+  muteImg.src = isMuted ? "assets/mute.png" : "assets/unmute.png"
+  muteImg.alt = isMuted ? "Unmute" : "Mute"
+}
+
+function updateSFXMuteImage() {
+  sfxMuteImg.src = sfxMuted ? "assets/sfxmute.png" : "assets/sfxunmute.png"
+  sfxMuteImg.alt = sfxMuted ? "Unmute SFX" : "Mute SFX"
+}
+
+function skipFish() {
+  if (!sfxMuted) {
+    skipsfx.currentTime = 0
+    skipsfx.play().catch(()=>{})
+  }
+  spawnFish()
+}
 
 shopArrow.onclick = () => shop.classList.toggle("open")
-
 settingsBtn.onclick = () => settingsModal.style.display = "flex"
 closeSettingsBtn.onclick = () => settingsModal.style.display = "none"
 aboutAuthorsBtn.onclick = () => aboutModal.style.display = "flex"
 closeAboutBtn.onclick = () => aboutModal.style.display = "none"
 
-musicSelect.onchange = () => {
+prevBtn.onclick = () => {
   selectedBgm.pause()
   selectedBgm.currentTime = 0
-  selectedBgm = bgmTracks[musicSelect.value]
-  if (!muteCheckbox.checked) selectedBgm.play()
+  const currentIndex = bgmTracks.indexOf(selectedBgm)
+  const newIndex = currentIndex === 0 ? bgmTracks.length - 1 : currentIndex - 1
+  selectedBgm = bgmTracks[newIndex]
+  if (!isMuted && musicStarted) selectedBgm.play()
 }
 
-muteCheckbox.onchange = () => {
-  if (muteCheckbox.checked) selectedBgm.pause()
-  else selectedBgm.play()
+nextBtn.onclick = () => {
+  selectedBgm.pause()
+  selectedBgm.currentTime = 0
+  const currentIndex = bgmTracks.indexOf(selectedBgm)
+  const newIndex = currentIndex === bgmTracks.length - 1 ? 0 : currentIndex + 1
+  selectedBgm = bgmTracks[newIndex]
+  if (!isMuted && musicStarted) selectedBgm.play()
 }
 
-document.addEventListener("mousedown",()=>{holding=true;selectedBgm.play()})
+muteToggleBtn.onclick = () => {
+  isMuted = !isMuted
+  updateMuteImage()
+  if (isMuted) selectedBgm.pause()
+  else if (musicStarted) selectedBgm.play()
+}
+
+sfxMuteToggleBtn.onclick = () => {
+  sfxMuted = !sfxMuted
+  updateSFXMuteImage()
+}
+// Input handling
+document.addEventListener("mousedown",()=>{holding=true;startMusic()})
 document.addEventListener("mouseup",()=>holding=false)
 document.addEventListener("keydown",e=>{
   if(e.code==="Space") holding=true
+  if(e.code==="KeyS") skipFish()
   if(e.ctrlKey&&e.shiftKey&&e.code==="KeyP"){
     const v=parseInt(prompt("Secret score:"),10)
     if(!isNaN(v)){score=v;scoreText.textContent=`Score: ${score} / ${WIN_SCORE}`;renderShop()}
   }
 })
 document.addEventListener("keyup",e=>{if(e.code==="Space") holding=false})
-
-game.addEventListener("touchstart",e=>{e.preventDefault();holding=true;selectedBgm.play()})
+// Mobile touch support
+game.addEventListener("touchstart",e=>{e.preventDefault();holding=true;startMusic()})
 game.addEventListener("touchend",()=>holding=false)
 
-skipBtn.onclick = ()=>spawnFish()
-
+skipBtn.onclick = () => skipFish()
+// Initialization
 rebuildFishPool()
 spawnFish()
 renderShop()
@@ -238,4 +304,3 @@ function loop(){
   }
 }
 loop()
-

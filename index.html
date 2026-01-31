@@ -31,7 +31,7 @@
   </div>
 </div>
 
-<!-- Shop Sidebar -->
+<!-- Shop -->
 <div id="shop">
   <div id="shopArrow">➡</div>
   <div id="shopContent">
@@ -40,23 +40,20 @@
   </div>
 </div>
 
-<!-- Settings Button -->
-<button id="settingsBtn">⚙</button>
+<!-- Settings -->
+<button id="settingsBtn"><img src="assets/opt.png" alt="Settings"></button>
 
-<!-- Settings Modal -->
+<!-- Modal -->
 <div id="settingsModal">
   <div id="settingsContent">
     <h2>Settings</h2>
-    <div class="setting">
-      <label>Background Music:</label>
-      <select id="musicSelect">
-        <option value="0">Song 1</option>
-        <option value="1">Song 2</option>
-      </select>
+    <div class="musicControls">
+      <button id="prevBtn"><img src="assets/prev.png" alt="Previous"></button>
+      <button id="muteToggleBtn"><img id="muteImg" src="assets/unmute.png" alt="Mute"></button>
+      <button id="nextBtn"><img src="assets/next.png" alt="Next"></button>
     </div>
-    <div class="setting">
-      <label>Mute Sound:</label>
-      <input type="checkbox" id="muteCheckbox">
+    <div class="musicControls">
+      <button id="sfxMuteToggleBtn"><img id="sfxMuteImg" src="assets/sfxunmute.png" alt="SFX Mute"></button>
     </div>
     <div class="setting">
       <button id="aboutAuthorsBtn">About Authors</button>
@@ -65,7 +62,7 @@
   </div>
 </div>
 
-<!-- About Authors Modal -->
+<!-- About -->
 <div id="aboutModal">
   <div id="aboutContent">
     <h2>About the Authors</h2>
@@ -84,17 +81,25 @@
       <h3>Meirelle Jillian I. Tambongco</h3>
       <p>Graphic artist and sprite creator. Designed the fish and rod sprites. Helped making the music and picking of sound effects</p>
     </div>
-      <p>Want any score? you can use a SHORTCUT and PRINT it out but have to SHIFT it a little.</p>
-    </div>
+    <p>Want any score? you can use a SHORTCUT and PRINT it out but have to SHIFT it a little.</p>
     <button id="closeAboutBtn">Close</button>
   </div>
+</div>
 
-<!-- Background music -->
+<!-- Music -->
 <audio id="bgm1" src="audio/song1.mp3" loop></audio>
 <audio id="bgm2" src="audio/song2.mp3" loop></audio>
+
+<!-- SFX -->
+<audio id="catchsfx0" src="audio/catchsfx0.m4a"></audio>
+<audio id="catchsfx1" src="audio/catchsfx1.m4a"></audio>
+<audio id="catchsfx2" src="audio/catchsfx2.m4a"></audio>
+<audio id="catchsfx3" src="audio/catchsfx3.m4a"></audio>
+<audio id="skipsfx" src="audio/skipsfx.m4a"></audio>
+<audio id="buysfx" src="audio/buysfx.m4a"></audio>
+<audio id="legspawn" src="audio/legspawn.m4a"></audio>
 
 <script src="script.js"></script>
 </body>
 </html>
-
 
